@@ -1,0 +1,7 @@
+{
+  "label_file": "Inference/save_model/coco.names",
+  "model_config": "Inference/save_model/yolov3.cfg",
+  "yolo_weights": "Inference/save_model/yolov3.weights",
+  "min_probablity": "0.5",
+  "nms_threshold": "0.3"
+}
