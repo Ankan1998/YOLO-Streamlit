@@ -6,15 +6,15 @@ import time
 class Inference_pipeline:
 
     def __init__(self,config_path):
-        model, layer_output_name, labels, min_prob, nms_threshold = load_yolo_model(config_path)
+        model, layer_output_name, labels, nms_threshold = load_yolo_model(config_path)
         self.model = model
         self.layer_output_name = layer_output_name
         self.labels = labels
-        self.min_prob = min_prob
+        # self.min_prob = min_prob
         self.nms_threshold = nms_threshold
 
 
-    def inference_image(self,img):
+    def inference_image(self,img,min_prob=0.5):
 
         img_blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416),
                                  swapRB=True, crop=False)
@@ -33,7 +33,7 @@ class Inference_pipeline:
                 score = object[5:]
                 cls_idx = np.argmax(score)
                 prob = score[cls_idx]
-                if prob > self.min_prob:
+                if prob > min_prob:
                     bbox = object[:4] * np.array([w, h, w, h])
                     x_center, y_center, bbox_width, bbox_height = bbox
                     x_top = int(x_center - (bbox_width / 2))
@@ -43,7 +43,7 @@ class Inference_pipeline:
                     conf.append(float(prob))
                     class_index.append(cls_idx)
 
-        nms_result = cv2.dnn.NMSBoxes(bboxes, conf, self.min_prob, self.nms_threshold)
+        nms_result = cv2.dnn.NMSBoxes(bboxes, conf, min_prob, self.nms_threshold)
 
         return self.labels,nms_result, bboxes, conf, class_index
 
