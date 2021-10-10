@@ -1,4 +1,4 @@
-#<p align = "center"> YOLO-Streamlit</p>
+# <p align = "center"> YOLO-Streamlit</p>
 YOLO v3 object detection algorithm well known for speed on par with accuracy. It is a 
 single trainable network unlike other Object detection algorith with two network.
 <br>
